@@ -1,0 +1,80 @@
+@model IEnumerable<isilani.Models.IsIlani>
+@{
+    ViewData["Title"] = "İlanlar";
+}
+
+<h1>İlanlar</h1>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="arama" value="@ViewData["CurrentSearch"]" class="form-control" placeholder="Başlığa göre ara" />
+    </div>
+    <div class="col-md-3">
+        <select name="kategoriId" class="form-select">
+            <option value="">Tüm Kategoriler</option>
+            @foreach (var c in (SelectList)ViewBag.Kategoriler)
+            {
+                <option value="@c.Value" selected="@(ViewData["CurrentCategory"]?.ToString() == c.Value ? "selected" : null)">@c.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="siralama" class="form-select">
+            <option value="">Sırala</option>
+            <option value="baslik_asc" selected="@(ViewData["CurrentSort"]=="baslik_asc" ? "selected" : null)">Başlık A→Z</option>
+            <option value="baslik_desc" selected="@(ViewData["CurrentSort"]=="baslik_desc" ? "selected" : null)">Başlık Z→A</option>
+            <option value="maas_desc" selected="@(ViewData["CurrentSort"]=="maas_desc" ? "selected" : null)">Maaş (yüksek→düşük)</option>
+            <option value="maas_asc" selected="@(ViewData["CurrentSort"]=="maas_asc" ? "selected" : null)">Maaş (düşük→yüksek)</option>
+            <option value="sirket_asc" selected="@(ViewData["CurrentSort"]=="sirket_asc" ? "selected" : null)">Firma A→Z</option>
+            <option value="sirket_desc" selected="@(ViewData["CurrentSort"]=="sirket_desc" ? "selected" : null)">Firma Z→A</option>
+            <option value="konum_asc" selected="@(ViewData["CurrentSort"]=="konum_asc" ? "selected" : null)">Konum A→Z</option>
+            <option value="konum_desc" selected="@(ViewData["CurrentSort"]=="konum_desc" ? "selected" : null)">Konum Z→A</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">Ara</button>
+    </div>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">@ViewBag.Message</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Firma</th>
+            <th>Konum</th>
+            <th>Maaş</th>
+            <th>Kategori</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Baslik</td>
+                <td>@item.Sirket</td>
+                <td>@item.Konum</td>
+                <td>@(item.Maas.HasValue?item.Maas.Value.ToString():"-")</td>
+                <td>@item.IsKategori?.Ad</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Detay</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.IsInRole("Admin"))
+{
+    <a class="btn btn-primary" asp-action="Create">Yeni İlan Ekle</a>
+}

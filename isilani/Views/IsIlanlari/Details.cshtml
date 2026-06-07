@@ -1,0 +1,24 @@
+@model isilani.Models.IsIlani
+@{
+    ViewData["Title"] = "İlan Detayı";
+}
+
+<h1>@Model.Baslik</h1>
+<div class="mb-3">
+    <strong>Firma:</strong> @Model.Sirket
+</div>
+<div class="mb-3">
+    <strong>Konum:</strong> @Model.Konum
+</div>
+<div class="mb-3">
+    <strong>Maaş:</strong> @(Model.Maas.HasValue?Model.Maas.Value.ToString():"-")
+</div>
+<div class="mb-3">
+    <strong>Kategori:</strong> @Model.IsKategori?.Ad
+</div>
+<hr />
+<div>
+    @Model.Aciklama
+</div>
+
+<a class="btn btn-secondary mt-3" asp-action="Index">Geri</a>

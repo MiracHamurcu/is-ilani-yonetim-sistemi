@@ -1,0 +1,43 @@
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build
+/bin/
+/obj/
+
+## EF Migrations
+Data/Migrations/
+
+## Visual Studio Code
+.vscode/
+
+## Rider
+.idea/
+
+## NuGet
+*.nupkg
+project.lock.json
+packages/
+
+## Database
+*.mdf
+*.ldf
+
+## IIS Express
+.vs/*/applicationhost.config
+
+## Node
+node_modules/
+
+## Logs
+*.log
+
+## Publish
+/publish/
+
+## User secrets
+secrets.json
